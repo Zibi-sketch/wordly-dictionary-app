@@ -6,18 +6,16 @@ let searchResults = document.getElementById("result-box");
 let failedAudio = document.getElementById("audio-fail");
 let errorContainer = document.getElementById("error-message");
 let pronunciation = document.getElementById("pronunciation");
-let meaningsList = document.getElementById("meaningsList");
+let datasList = document.getElementById("meaningsList");
 let synonymList = document.getElementById("synonym-list");
 let antonymList = document.getElementById("antonym-list");
+let playButton = document.getElementById("audio-playback-button");
 
 
 
 
 form.addEventListener('submit', (event) => {
     event.preventDefault();
-    //Clear the previous audio button's container
-    let playButton = document.getElementById("audio-playback-button");
-    playButton.innerHTML = "";
 
     //make a new audio button for the upcoming word pronunciation
     let audioButton = document.createElement("button");
@@ -26,6 +24,7 @@ form.addEventListener('submit', (event) => {
     audioButton.textContent = "Play Audio";
     audioButton.style.display = "none";//Hide until an input is made
 
+    playButton.innerHTML = "";
     playButton.appendChild(audioButton);
 
     //Clear the audio error-message if it had popped up before
@@ -36,9 +35,27 @@ form.addEventListener('submit', (event) => {
 
     //Take the users input
     let word = inputField.value;
-    lookForWord(word);
-    inputField.value = "";
-})
+
+    //Display a message if User submits nothing
+    if (word !== "") {
+        lookForWord(word);
+    }
+    else {
+        if (searchResults) {
+            searchResults.innerHTML = "";
+            errorContainer.classList.add("hidden");
+        }
+        if (errorContainer) {
+            errorContainer.innerHTML = "";
+            errorContainer.classList.remove("hidden");
+        }
+            let blankMessage = document.createElement("p");
+            blankMessage.textContent = "You haven't filled out this field yet👀"
+            errorContainer.appendChild(blankMessage);
+        }
+        //Clear input field after submission:
+        inputField.value = "";
+    })
 
 inputField.addEventListener('input', () => {
     //Including a preview of what you're writing because why not?
@@ -77,7 +94,7 @@ function lookForWord(word) {
                 errorContainer.classList.remove("hidden");
                 let errorMessage = document.createElement("p");
 
-                errorMessage.textContent = `Oops! Something went wrong!😓 \n Please try again`;
+                errorMessage.textContent = `Sorry! We couldn't find that word.😓 \n Please try again`;
                 errorContainer.appendChild(errorMessage);
 
                 //Tell me what's wrong exactly
@@ -98,9 +115,9 @@ function discoverInfo(info) {
     pronunciation.textContent = phoneticEntry.text || "No pronunciation available";
 
 
-    //DISPLAYING THE WORD'S MEANING:
+    //DISPLAYING THE WORD'S data:
     //clear the container of any previous definitions
-    meaningsList.innerHTML = "";
+    datasList.innerHTML = "";
 
     //Look for and display new definitions
     let definitions = info[0].meanings;
@@ -118,7 +135,7 @@ function discoverInfo(info) {
         })
         eachDef.appendChild(partOfSpeech);
         eachDef.appendChild(defsList);
-        meaningsList.appendChild(eachDef);
+        datasList.appendChild(eachDef);
     })
 
 
@@ -149,49 +166,59 @@ function discoverInfo(info) {
     //DISPLAYING SYNONYMES AND ANTONYMES:
     //Display synonymes:
     //clear the container of old info
-    synonymsList.innerHTML = "";
+    if (synonymList) {
+        synonymList.innerHTML = "";
+    }
 
     //Look for and display new synonymes
-    let Synonyms = info[0].meanings;
 
-    let eachSyn = document.createElement("div")//smaller box
-    let synonymTitle = document.createElement("h3");//Subheading
-    synonymTitle.textContent = "Snynonyms";
+    definitions.forEach(data => {
 
-    let symsList = document.createElement("ul");
+        if (data.synonyms?.length > 0) {
+            let eachSyn = document.createElement("div")//smaller box
+            let synonymTitle = document.createElement("h3");//Subheading
+            synonymTitle.textContent = "Synonyms";
+            let symsList = document.createElement("ul");
 
-    syn.synonyms.forEach((one) => {
-        let oneSyn = document.createElement("li");
-        oneSyn.textContent = one;
-        symsList.appendChild(oneSyn);
-    })
-
-    eachSyn.appendChild(synonymTitle);
-    eachSyn.appendChild(symsList);
-    synonymList.appendChild(eachSyn);
+            data.synonyms.forEach(synonym => {
+                let oneSyn = document.createElement("li");
+                oneSyn.textContent = synonym;
+                symsList.appendChild(oneSyn);
+            });
+            eachSyn.appendChild(synonymTitle);
+            eachSyn.appendChild(symsList);
+            synonymList.appendChild(eachSyn);
+        }
+    });
 
 
     //Display antonyms:
     //clear the container of old info
-    antonymList.innerHTML = "";
+    if (antonymList) {
+        antonymList.innerHTML = "";
+    }
 
     //Look for and display new antonyms
-    let Antonyms = info[0].meanings;
-   
-        let eachAnt = document.createElement("div")//smaller box
-        let antonymTitle = document.createElement("h3");//Subheading
-        antonymTitle.textContent = "Antonyms";
 
-        let antList = document.createElement("ul");
+    definitions.forEach(data => {
+        if (data.antonyms?.length > 0) {
+            let eachAnt = document.createElement("div")//smaller box
+            let antonymTitle = document.createElement("h3");//Subheading
+            antonymTitle.textContent = "Antonyms";
 
-        ant.antonyms.forEach((one) => {
-            let oneAnt = document.createElement("li");
-            oneAnt.textContent = one;
-            antList.appendChild(oneAnt);
-        })
+            let antList = document.createElement("ul");
+            data.antonyms.forEach(antonym => {
+                let oneAnt = document.createElement("li");
+                oneAnt.textContent = antonym;
+                antList.appendChild(oneAnt);
+            });
 
-        eachAnt.appendChild(antonymTitle);
-        eachAnt.appendChild(antList);
-        antonymList.appendChild(eachAnt);
-    
+            eachAnt.appendChild(antonymTitle);
+            eachAnt.appendChild(antList);
+            antonymList.appendChild(eachAnt);
+
+        }
+    });
+
+
 }
