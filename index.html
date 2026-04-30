@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h1>WORDLY DICTIONARY</h1>
+    <form id="form">
+        <input type="text" id="input" placeholder="Type any word">
+        <button type="submit" id="submit-button">Yes</button>
+    </form>
+    <div id="result-box">
+        <p id="preview"></p>
+        <h2 id="word"></h2>
+        <div id="audio-playback-button">
+        </div>
+        <div id="audio-fail"></div>
+        <p id="pronunciation"></p>
+        <div id="meaningsList"></div>
+        <div id="synonym-list"></div>
+        <div id="antonym-list"></div>
+    </div>
+    <div id="error-message" class="hidden"></div>
+    <script src="script.js"></script>
+</body>
+
+</html>
