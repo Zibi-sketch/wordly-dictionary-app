@@ -14,10 +14,10 @@ This is a  Single Page Application (SPA) that enables users to search for a word
 3. Open the index.html in your browser
 
 ## Technologies Used
--HTML
--Javascript
--CSS
--Fetch API  (Free Dictionary API)
+- HTML
+- Javascript
+- CSS
+- Fetch API  (Free Dictionary API)
 
 ## Future Documentation
 - Add a custom loading spinner while searching
