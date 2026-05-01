@@ -17,16 +17,6 @@ let playButton = document.getElementById("audio-playback-button");
 form.addEventListener('submit', (event) => {
     event.preventDefault();
 
-    //make a new audio button for the upcoming word pronunciation
-    let audioButton = document.createElement("button");
-
-    audioButton.id = "temporary-button";
-    audioButton.textContent = "Play Audio";
-    audioButton.style.display = "none";//Hide until an input is made
-
-    playButton.innerHTML = "";
-    playButton.appendChild(audioButton);
-
     //Clear the audio error-message if it had popped up before
     if (failedAudio) failedAudio.textContent = "";
 
@@ -46,6 +36,27 @@ inputField.addEventListener('input', () => {
 })
 
 function lookForWord(word) {
+    // Safely erase all previous results if anythe old data (trust me it only works if I do it the long way :(
+    let spelling = document.getElementById("word");
+    if (spelling) spelling.textContent = "";
+
+    let pronunciation = document.getElementById("pronunciation");
+    if (pronunciation) pronunciation.textContent = "";
+
+    let datasList = document.getElementById("meaningsList");
+    if (datasList) datasList.innerHTML = "";
+
+    let synonymList = document.getElementById("synonym-list");
+    if (synonymList) synonymList.innerHTML = "";
+
+    let antonymList = document.getElementById("antonym-list");
+    if (antonymList) antonymList.innerHTML = "";
+
+    let playButton = document.getElementById("audio-playback-button");
+    if (playButton) playButton.innerHTML = "";
+
+    //Now fetch the data from the API
+
     fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`)
         .then(function (response) {
             if (response.ok) {
@@ -143,10 +154,17 @@ function discoverInfo(info) {
     let audioURL = info[0].phonetics.find(p => p.audio !== "")?.audio;
 
     //Emptying the audio message container before adding new stuff
-    failedAudio.textContent = "";
+    if (failedAudio) failedAudio.textContent = "";
 
     if (audioURL) {
-        audioButton.style.display = "block";//Reveal yourself if an audio file is available to play:)
+        //create the playback button if there's audio
+        let audioButton = document.createElement("button");
+
+        audioButton.id = "temporary-button";
+        audioButton.textContent = "Play Audio";
+        playButton.innerHTML = "";
+        if (playButton) playButton.appendChild(audioButton);
+
 
         //play audio function
         audioButton.onclick = () => {
@@ -154,11 +172,11 @@ function discoverInfo(info) {
             audio.play();
         }
     }
-    else {//If no audio is available, display error an error message in place of the button
-        audioButton.style.display = "none";
+    else {//If no audio is available, display an error message in place of the button
+        if (audioButton) audioButton.style.display = "none";
         failMessage = document.createElement("p");
         failMessage.textContent = "Sorry! There's no audio available for this word."
-        failedAudio.appendChild(failMessage);
+        if (failedAudio) failedAudio.appendChild(failMessage);
     }
 
     //DISPLAYING SYNONYMES AND ANTONYMES:
@@ -188,7 +206,7 @@ function discoverInfo(info) {
             synonymList.appendChild(eachSyn);
         }
         else {
-            function showOnce() {
+            function showOnce() {//Only show the error message once
                 let called = 0;
                 return () => {
                     if (called === 0) {
@@ -230,7 +248,7 @@ function discoverInfo(info) {
             antonymList.appendChild(eachAnt);
 
         }
-        else {
+        else {//Only show the error message once
             function displayOnce() {
                 let called = 0;
                 return () => {
