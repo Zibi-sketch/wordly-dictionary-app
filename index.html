@@ -4,26 +4,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>The Wordly Dictionary</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <h1>WORDLY DICTIONARY</h1>
-    <form id="form">
-        <input type="text" id="input" placeholder="Type any word">
-        <button type="submit" id="submit-button">Yes</button>
-    </form>
-    <div id="result-box">
+    <div id="search-bar">
+        <h1 id="title">WORDLY DICTIONARY</h1>
+        <p id = "search-prompt"> Search for a word here to see its meaning, pronunciation and possible synonyms</p>
+        <form id="form">
+            <input type="text" id="input" placeholder="Looking for something?">
+            <button type="submit" id="submit-button">Yes</button>
+        </form>
         <p id="preview"></p>
-        <h2 id="word"></h2>
-        <div id="audio-playback-button">
+    </div>
+    <div id="result-box">
+        <div id="intro" class="Lists hidden">
+            <h1 id="word"></h1>
+            <p id="pronunciation"></p>
+            <div id="audio-playback-button"></div>
+            <div id="audio-fail"></div>
         </div>
-        <div id="audio-fail"></div>
-        <p id="pronunciation"></p>
-        <div id="meaningsList"></div>
-        <div id="synonym-list"></div>
-        <div id="antonym-list"></div>
+
+        <div id="meaningsList" class="Lists hidden"></div>
+        <div id="synonym-list" class="Lists hidden"></div>
+        <div id="antonym-list" class="Lists hidden"></div>
     </div>
     <div id="error-message" class="hidden"></div>
     <script src="script.js"></script>

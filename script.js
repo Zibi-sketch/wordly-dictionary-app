@@ -10,6 +10,7 @@ let datasList = document.getElementById("meaningsList");
 let synonymList = document.getElementById("synonym-list");
 let antonymList = document.getElementById("antonym-list");
 let playButton = document.getElementById("audio-playback-button");
+let introduction = document.getElementById("intro")
 
 
 
@@ -36,21 +37,25 @@ inputField.addEventListener('input', () => {
 })
 
 function lookForWord(word) {
-    // Safely erase all previous results if anythe old data (trust me it only works if I do it the long way :(
+    // Safely erases all previous results if anythe old data (trust me it only works if I do it the long way :(
     let spelling = document.getElementById("word");
     if (spelling) spelling.textContent = "";
+    introduction.classList.add("hidden");
 
     let pronunciation = document.getElementById("pronunciation");
     if (pronunciation) pronunciation.textContent = "";
 
     let datasList = document.getElementById("meaningsList");
     if (datasList) datasList.innerHTML = "";
+    datasList.classList.add("hidden");
 
     let synonymList = document.getElementById("synonym-list");
     if (synonymList) synonymList.innerHTML = "";
+    synonymList.classList.add("hidden");
 
     let antonymList = document.getElementById("antonym-list");
     if (antonymList) antonymList.innerHTML = "";
+    antonymList.classList.add("hidden");
 
     let playButton = document.getElementById("audio-playback-button");
     if (playButton) playButton.innerHTML = "";
@@ -102,7 +107,7 @@ function lookForWord(word) {
                 errorContainer.classList.remove("hidden");
                 let errorMessage = document.createElement("p");
 
-                errorMessage.textContent = `Sorry! We can't find that😅. Feel free to submit something else`;
+                errorMessage.textContent = `Sorry! We can't find that😅. Feel free to submit something else!`;
                 errorContainer.appendChild(errorMessage);
 
                 //Tell me what's wrong on the console
@@ -116,7 +121,11 @@ function discoverInfo(info) {
 
     //DISPLAYING THE ACTUAL WORD:
     let spelling = document.getElementById("word");
-    spelling.textContent = info[0].word;
+    if (spelling) {
+        introduction.classList.remove("hidden");
+        datasList.classList.remove("hidden");
+        spelling.textContent = info[0].word.toUpperCase();
+    }
 
     //DISPLAYING THE WORD'S PRONUNCIATION OR OTHERWISE AN ERROR MESSAGE:
     const phoneticEntry = info[0].phonetics.find(p => p.text) || info[0];
@@ -133,7 +142,7 @@ function discoverInfo(info) {
     definitions.forEach((def) => {
         let eachDef = document.createElement("div")//smaller box
         let partOfSpeech = document.createElement("h3");//Subheading
-        partOfSpeech.textContent = def.partOfSpeech;
+        partOfSpeech.textContent = def.partOfSpeech.toUpperCase();
 
         let defsList = document.createElement("ul");
 
@@ -191,9 +200,10 @@ function discoverInfo(info) {
     definitions.forEach(data => {
 
         if (data.synonyms?.length > 0) {
+            synonymList.classList.remove("hidden");
             let eachSyn = document.createElement("div")//smaller box
             let synonymTitle = document.createElement("h3");//Subheading
-            synonymTitle.textContent = "Synonyms";
+            synonymTitle.textContent = "SYNONYMS";
             let symsList = document.createElement("ul");
 
             data.synonyms.forEach(synonym => {
@@ -232,9 +242,10 @@ function discoverInfo(info) {
 
     definitions.forEach(data => {
         if (data.antonyms?.length > 0) {
+            antonymList.classList.remove("hidden");
             let eachAnt = document.createElement("div")//smaller box
             let antonymTitle = document.createElement("h3");//Subheading
-            antonymTitle.textContent = "Antonyms";
+            antonymTitle.textContent = "ANTONYMS";
 
             let antList = document.createElement("ul");
             data.antonyms.forEach(antonym => {

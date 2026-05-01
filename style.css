@@ -1,0 +1,159 @@
+body {
+    /*Setting the background picture :)*/
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    background-image: url(https://image.slidesdocs.com/responsive-images/background/line-purple-abstract-business-curve-technology-powerpoint-background_22532709c1__960_540.jpg);
+
+    font-family:"consolas", sans-serif;
+}
+
+/* Styling the submit button*/
+#submit-button {
+    background-color: rgb(145, 83, 204);
+    font-size: 1.0em;
+    text-decoration-color: white;
+    border-color: white;
+    border-radius: 10px;
+    box-shadow: 0 3px 3px grey;
+    padding: 5px 3px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+#submit-button:hover {
+    /*Special effects✨*/
+    transform: translateY(-2px);
+    background-color: gold;
+}
+
+/* Styling the button created in JS for audio*/
+#temporary-button {
+    background-color: white;
+    border: 1px solid white;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+#temporary-button:hover {
+    /*Special effects✨*/
+    background-color: gold;
+    transform: translateY(-2px);
+    color: white;
+}
+
+/*Styling the box containing the search and Title*/
+#search-bar {
+    
+    display: flex;
+    flex-direction: column; 
+    text-align: center;
+    color: white;
+    gap: 15px;   
+
+    width: 85%;
+    margin: 10px auto;
+    padding: 10px;
+
+    border: 1px solid grey;
+    border-radius: 25px;
+    border-color: white;
+}
+
+/*Styles applied to the title specifically*/
+#title {
+    font-size: 400% ;
+    font-weight: bold;
+    text-align: center;
+    color: gold;
+    text-decoration: white dotted underline;
+}
+
+/*Styles applied to the searchbar specifically*/
+#input {
+    border-radius: 10px;
+    padding: 10px 20px;
+    border: none;
+    width: 300px;
+}
+
+#search-prompt{
+    font-size: larger;
+}
+
+/*Styles applied universally across all results(except errors)*/
+#result-box {
+    text-align: center;
+    color: white;
+    font-size:medium;
+}
+
+/*Styles applied across definitions, synonyms ans antonyms*/
+.Lists {
+    text-align: left;
+    display: block;
+    border-radius: 25px;
+    border: 5px solid white;
+    padding: 30px;
+
+    
+    height: auto;
+    margin: 20px auto;
+    
+    width: 65%;
+    max-width: none;
+}
+
+/*Styles applied across pronunciatiation, spelling and audio messages*/
+.intro {
+    display:block;
+    
+    width: auto;
+    max-width: 750px;
+    height: auto;
+    margin: 20px auto;
+
+   
+    border: 5px solid rgb(255, 255, 255);
+    padding: 30px;
+    border-radius: 25px;
+}
+
+#word{
+    font-size: 3.0em;
+}
+#pronunciation{
+    font-size: 1.5em;
+}
+
+/* Styling the <ul> and <li> tags created the loops*/
+#meaningsList ul,
+#synonym-list ul,
+#antonym-list ul {
+    margin-bottom: 10px;
+    text-decoration-color: gold;
+}
+
+#synonym-list h3,
+#antonym-list h3 {
+    text-decoration: underline;
+}
+
+#meaningsList li {
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+#error-message{
+    color : white;
+    font-size: x-large ;
+    text-align: center;
+}
+
+.hidden {
+    display: none !important;
+}
