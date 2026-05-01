@@ -35,27 +35,10 @@ form.addEventListener('submit', (event) => {
 
     //Take the users input
     let word = inputField.value;
+    lookForWord(word);
 
-    //Display a message if User submits nothing
-    if (word !== "") {
-        lookForWord(word);
-    }
-    else {
-        if (searchResults) {
-            searchResults.innerHTML = "";
-            errorContainer.classList.add("hidden");
-        }
-        if (errorContainer) {
-            errorContainer.innerHTML = "";
-            errorContainer.classList.remove("hidden");
-        }
-            let blankMessage = document.createElement("p");
-            blankMessage.textContent = "You haven't filled out this field yet👀"
-            errorContainer.appendChild(blankMessage);
-        }
-        //Clear input field after submission:
-        inputField.value = "";
-    })
+    inputField.value = "";
+})
 
 inputField.addEventListener('input', () => {
     //Including a preview of what you're writing because why not?
@@ -83,10 +66,24 @@ function lookForWord(word) {
         })
 
         .catch(error => {
-            //Erase all previous results if any
-            if (searchResults) {
-                searchResults.innerHTML = "";
-            }
+            // Safely erase all previous results if anythe old data (trust me it only works if I do it the long way :(
+            let spelling = document.getElementById("word");
+            if (spelling) spelling.textContent = "";
+
+            let pronunciation = document.getElementById("pronunciation");
+            if (pronunciation) pronunciation.textContent = "";
+
+            let datasList = document.getElementById("meaningsList");
+            if (datasList) datasList.innerHTML = "";
+
+            let synonymList = document.getElementById("synonym-list");
+            if (synonymList) synonymList.innerHTML = "";
+
+            let antonymList = document.getElementById("antonym-list");
+            if (antonymList) antonymList.innerHTML = "";
+
+            let playButton = document.getElementById("audio-playback-button");
+            if (playButton) playButton.innerHTML = "";
 
             //Erase any error messages if any and create a new one
             if (errorContainer) {
@@ -94,11 +91,11 @@ function lookForWord(word) {
                 errorContainer.classList.remove("hidden");
                 let errorMessage = document.createElement("p");
 
-                errorMessage.textContent = `Sorry! We couldn't find that word.😓 \n Please try again`;
+                errorMessage.textContent = `Sorry! We can't find that😅. Feel free to submit something else`;
                 errorContainer.appendChild(errorMessage);
 
-                //Tell me what's wrong exactly
-                console.log("Sorry, there's been an error:", error.message);
+                //Tell me what's wrong on the console
+                console.log("There seems to be an error here:", error.message);
             }
         })
 
@@ -112,10 +109,11 @@ function discoverInfo(info) {
 
     //DISPLAYING THE WORD'S PRONUNCIATION OR OTHERWISE AN ERROR MESSAGE:
     const phoneticEntry = info[0].phonetics.find(p => p.text) || info[0];
+    let pronunciation = document.getElementById("pronunciation");
     pronunciation.textContent = phoneticEntry.text || "No pronunciation available";
 
 
-    //DISPLAYING THE WORD'S data:
+    //DISPLAYING THE WORD'S DEFINITION:
     //clear the container of any previous definitions
     datasList.innerHTML = "";
 
@@ -159,7 +157,7 @@ function discoverInfo(info) {
     else {//If no audio is available, display error an error message in place of the button
         audioButton.style.display = "none";
         failMessage = document.createElement("p");
-        failMessage.textContent = "Sorry! No audio available."
+        failMessage.textContent = "Sorry! There's no audio available for this word."
         failedAudio.appendChild(failMessage);
     }
 
@@ -189,6 +187,20 @@ function discoverInfo(info) {
             eachSyn.appendChild(symsList);
             synonymList.appendChild(eachSyn);
         }
+        else {
+            function showOnce() {
+                let called = 0;
+                return () => {
+                    if (called === 0) {
+                        noMessage = document.createElement("p");
+                        noMessage.textContent = "It seems there aren't any synonyms available for this word.";
+                        synonymList.appendChild(noMessage);
+                        called++;
+                    }
+                }
+            }
+            return showOnce();
+        }
     });
 
 
@@ -217,6 +229,20 @@ function discoverInfo(info) {
             eachAnt.appendChild(antList);
             antonymList.appendChild(eachAnt);
 
+        }
+        else {
+            function displayOnce() {
+                let called = 0;
+                return () => {
+                    if (called === 0) {
+                        nullMessage = document.createElement("p");
+                        nullMessage.textContent = "It seems there aren't any antonyms available for this word.";
+                        antonymList.appendChild(nullMessage);
+                        called++;
+                    }
+                }
+            }
+            return displayOnce();
         }
     });
 
